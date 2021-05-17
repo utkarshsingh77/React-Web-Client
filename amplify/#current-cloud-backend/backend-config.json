@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "ReactWebClient": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}
