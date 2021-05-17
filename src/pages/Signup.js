@@ -10,6 +10,7 @@ import illustration from "images/signup-illustration.svg";
 import logo from "images/logo.png";
 import googleIconImageSrc from "images/google-icon.png";
 import { ReactComponent as SignUpIcon } from "feather-icons/dist/icons/user-plus.svg";
+import { Auth } from 'aws-amplify';
 
 const Container = tw(ContainerBase)`min-h-screen bg-primary-900 text-white font-medium flex justify-center -m-8`;
 const Content = tw.div`max-w-screen-xl m-0 sm:mx-20 sm:my-16 bg-white text-gray-900 shadow sm:rounded-lg flex justify-center flex-1`;
@@ -19,7 +20,6 @@ const LogoImage = tw.img`h-12 mx-auto`;
 const MainContent = tw.div`mt-12 flex flex-col items-center`;
 const Heading = tw.h1`text-2xl xl:text-3xl font-extrabold`;
 const FormContainer = tw.div`w-full flex-1 mt-8`;
-
 const SocialButtonsContainer = tw.div`flex flex-col items-center`;
 const SocialButton = styled.a`
   ${tw`w-full max-w-xs font-semibold rounded-lg py-3 border text-gray-900 bg-gray-300 hocus:bg-gray-200 hocus:border-gray-400 flex items-center justify-center transition-all duration-300 focus:outline-none focus:shadow-outline text-sm mt-5 first:mt-0`}
@@ -57,7 +57,7 @@ const IllustrationImage = styled.div`
 
 
 
-export default ({
+function SignupPage({
   logoLinkUrl = "http://localhost:3000/",
   illustrationImageSrc = illustration,
   headingText = "Sign Up For Harbor",
@@ -74,30 +74,42 @@ export default ({
   privacyPolicyUrl = "#",
   signInUrl = "#"
 }
-) => {
+) {
   const [redirect, setRedirect] = useState(false)
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
-  const [phone, setPhone] = useState("")
+  const [phone_number, setPhoneNumber] = useState("")
+  const [address, setAddress] = useState("")
+  const [gender, setGender] = useState("")
+  const [birthdate, setBirthdate] = useState("")
   const [password, setPassword] = useState("")
 
-  function onSubmit() {
-    axios.post("http://localhost:8000/", {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phone: phone,
-      password: password
-    })
-    .then((res) => {
-      console.log(res.status)
-      if (res.status === 200) {
-        setRedirect(true)
-      }
-    })
-    .catch((e) => console.log(e))
-  }
+
+
+  async function signUp() {
+    try {
+        const { user } = await Auth.signUp(
+          {
+            username: email,
+            password: password,
+            attributes: {
+                "address": address,       
+                "birthdate": birthdate,
+                "email": email,
+                "family_name": lastName,
+                "gender": gender,
+                "given_name": firstName,
+                "phone_number": phone_number,
+                "username": email,
+            }
+        }
+        );
+        console.log(user);
+    } catch (error) {
+        console.log('error signing up:', error);
+    }
+}
   
   return redirect ? 
   (<Redirect push to="/"/>)
@@ -113,27 +125,25 @@ export default ({
           <MainContent>
             <Heading>{headingText}</Heading>
             <FormContainer>
-              <SocialButtonsContainer>
-                {socialButtons.map((socialButton, index) => (
-                  <SocialButton key={index} href={socialButton.url}>
-                    <span className="iconContainer">
-                      <img src={socialButton.iconImageSrc} className="icon" alt="" />
-                    </span>
-                    <span className="text">{socialButton.text}</span>
-                  </SocialButton>
-                ))}
-              </SocialButtonsContainer>
-              <DividerTextContainer>
-                <DividerText>Or Sign up with your e-mail</DividerText>
-                <br></br>
-              </DividerTextContainer>
               <Form>
-                <Input type="firstname" placeholder="First Name" value={firstName} onChange={(event) => setFirstName(event.target.value)}/>
-                <Input type="lastname" placeholder="Last Name" value={lastName} onChange={(event) => setLastName(event.target.value)}/>
-                <Input type="email" placeholder="Email" value={email} onChange={(event) => setEmail(event.target.value)}/>
-                <Input type="phone" placeholder="Phone Number" value={phone} onChange={(event) => setPhone(event.target.value)}/>
-                <Input type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)}/>
-                <SubmitButton onClick={onSubmit} type="submit">
+                <Input type="text" placeholder="First Name" value={firstName} onChange={(event) => setFirstName(event.target.value)}/>
+                <Input type="text" placeholder="Last Name" value={lastName} onChange={(event) => setLastName(event.target.value)}/>
+                <Input type="text" placeholder="Email" value={email} onChange={(event) => setEmail(event.target.value)}/>
+                <Input type="text" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)}/>
+                <Input type="number" placeholder="Phone Number" value={phone_number} onChange={(event) => setPhoneNumber(event.target.value)}/>
+                <Input type="date" value={birthdate} onChange={(event) => setBirthdate(event.target.value)}/>
+                <Input type="text" placeholder="16812 E. Caley Pl, Aurora, CO, 80016" value={address} onChange={(event) => setAddress(event.target.value)}/>
+               <br></br>
+               <br></br>
+               <label>
+                  Gender: 
+                  <select value={gender} onChange={(event) => setGender(event.target.value)}>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </label>
+                <SubmitButton onClick={signUp} type="submit">
 
                   <SubmitButtonIcon className="icon" />
                   <span className="text">{submitButtonText}</span>
@@ -167,3 +177,5 @@ export default ({
   </AnimationRevealPage>
   )
 };
+
+export default SignupPage

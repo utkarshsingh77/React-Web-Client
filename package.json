@@ -4,10 +4,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-amplify/auth": "^4.0.0",
+    "@aws-amplify/ui-react": "^1.2.0",
     "@owaiswiz/use-in-view": "^1.0.16",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^13.1.5",
+    "aws-amplify": "^4.0.2",
     "axios": "^0.21.1",
     "feather-icons": "^4.28.0",
     "framer-motion": "^4.1.5",
