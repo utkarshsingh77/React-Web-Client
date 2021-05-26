@@ -4,8 +4,9 @@ import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
 import SignupButton from "components/signup-button.js";
-import AuthNav from "components/auth-nav.js";
 import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.js";
+import LoginButton from "../login-button";
+import {Auth} from 'aws-amplify'
 
 import logo from "../../images/logo.png";
 import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
@@ -59,7 +60,7 @@ export const DesktopNavLinks = tw.nav`
   hidden lg:flex flex-1 justify-between items-center
 `;
 
-export default ({ roundedHeaderButton = false, logoLink, links, className, collapseBreakpointClass = "lg" }) => {
+export default ({ roundedHeaderButton = false, isAuthenticated, logoLink, links, className, collapseBreakpointClass = "lg" }) => {
   /*
    * This header component accepts an optionals "links" prop that specifies the links to render in the navbar.
    * This links props should be an array of "NavLinks" components which is exported from this file.
@@ -78,8 +79,8 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
       <NavLink href="mission">Our Mission</NavLink>
       <NavLink href="hiw">How It Works</NavLink>
       <NavLink href="pricing">Pricing</NavLink>
-      <PrimaryLink href="profile">Profile</PrimaryLink>
-      <AuthNav/>
+      <PrimaryLink onClick={signOut} href="/">Log Out</PrimaryLink>
+      <PrimaryLink href="profile">My Account</PrimaryLink>
     </NavLinks>
   ];
 
@@ -88,7 +89,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
       <NavLink href="mission">Our Mission</NavLink>
       <NavLink href="hiw">How It Works</NavLink>
       <NavLink href="pricing">Pricing</NavLink>
-      <AuthNav/>
+      <LoginButton />
       <SignupButton />
     </NavLinks>
   ];
@@ -104,11 +105,18 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
   );
 
   logoLink = logoLink || defaultLogoLink;
-  const isAuthenticated = false;
   links = isAuthenticated ? defaultLinksAuthenticated : defaultLinksNotAuthenticated;
 
+  async function signOut() {
+      try {
+          await Auth.signOut();
+      } catch (error) {
+          console.log('error signing out: ', error);
+      }
+  }
+  
   return (
-    <Header isAuthenticated={isAuthenticated} className={className || "header-light"}>
+    <Header className={className || "header-light"}>
       <DesktopNavLinks css={collapseBreakpointCss.desktopNavLinks}>
         {logoLink}
         {links}

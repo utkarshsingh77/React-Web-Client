@@ -29,7 +29,7 @@ const Image = tw.img`w-144 ml-auto`
 
 
 
-const Hero = props => {
+const Hero = ({isAuthenticated}) => {
   <ScriptTag src="https://cdn.plaid.com/link/v2/stable/link-initialize.js" />
   const logoLink = (
     <LogoLink href="/">
@@ -37,7 +37,7 @@ const Hero = props => {
       Harbor
     </LogoLink>
   );
-
+  
   const heading = "Collaborative accountability fosters Trust";
   const description = "We build robust behavioral smart contracts that can enforce the accountability needed to help regain trust, freedom, and a normal life.";
   const primaryButtonText = "Learn More";
@@ -55,7 +55,7 @@ const Hero = props => {
   return (
     <PrimaryBackgroundContainer>
       <Content2Xl>
-        <Header logoLink={logoLink} />
+        <Header logoLink={logoLink} isAuthenticated={isAuthenticated}/>
         <Container>
           <ContentWithVerticalPadding>
             <Row>

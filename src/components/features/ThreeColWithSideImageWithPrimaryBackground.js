@@ -8,9 +8,7 @@ import { SectionDescription } from "components/misc/Typography.js";
 
 import defaultCardImage from "images/shield-icon.svg";
 
-import SupportIconImage from "images/support-icon.svg";
 import ShieldIconImage from "images/shield-icon.svg";
-import CustomizeIconImage from "images/customize-icon.svg";
 import FastIconImage from "images/fast-icon.svg";
 import ReliableIconImage from "images/reliable-icon.svg";
 import SimpleIconImage from "images/simple-icon.svg";
@@ -56,7 +54,7 @@ export default ({
   cards = null,
   heading = "Amazing Features",
   subheading = "",
-  description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  description = "These are the various data points that we observe and continually verify to hold users to the standards that will help them progress toward a free and responsible life",
 }) => {
   /*
    * This componets has an array of object denoting the cards defined below. Each object in the cards array can have the key (Change it according to your need, you can also add more objects to have more cards in this feature component) or you can directly pass this using the cards prop:
@@ -72,11 +70,25 @@ export default ({
       title: "Secure",
       description: "We strictly only deal with vendors that provide top notch security infrastructure."
     },
-    { imageSrc: SupportIconImage, title: "24/7 Support" },
-    { imageSrc: CustomizeIconImage, title: "Customizable" },
-    { imageSrc: ReliableIconImage, title: "Reliable" },
-    { imageSrc: FastIconImage, title: "Fast" },
-    { imageSrc: SimpleIconImage, title: "Easy" }
+    { imageSrc: ReliableIconImage,
+        title: "Drug Testing",
+        description: "We provide the entire customizable infrastructure for monitored sobriety " +
+            "so you can rest assured the client maintains a substance free life"
+    },
+    { imageSrc: FastIconImage,
+        title: "Finances",
+        description: "After setup with the user's accounts, we monitor their transactions and deposits " +
+            "to verify they are adhering to agreed upon restrictions"
+    },
+    { imageSrc: SimpleIconImage,
+        title: "Location",
+        description: "We are able to monitor all travel and location data of the user to ensure they are not " +
+            "going anywhere they shouldn't be or places that are likely to result in nefarious behavior"
+    },
+      { imageSrc: SimpleIconImage,
+          title: "Communication",
+          description: "We are able to monitor texting and calling from the user's mobile device to ensure they are not communicating with dealers or other bad influences as outlined in the contract"
+      }
   ];
 
   if (!cards) cards = defaultCards;

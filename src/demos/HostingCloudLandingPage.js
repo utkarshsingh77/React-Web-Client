@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import Hero from "components/hero/TwoColumnWithPrimaryBackground.js";
 import Features from "components/features/ThreeColWithSideImageWithPrimaryBackground.js";
@@ -9,12 +9,36 @@ import FAQ from "components/faqs/TwoColumnPrimaryBackground.js";
 import Footer from "components/footers/FiveColumnDark.js";
 import serverRedundancyIllustrationImageSrc from "images/server-redundancy-illustration.svg"
 import serverSecureIllustrationImageSrc from "images/server-secure-illustration.svg"
+import { Auth } from "aws-amplify";
 
 
 export default () => {
+  const [authenticated, setAuthenticated] = useState(false)
+
+  useEffect(() => {
+    async function isAuthenticated() {
+      if (authenticated) {
+        return
+      }
+      try {
+        const currentSession = await Auth.currentSession()
+        setAuthenticated(true)
+        console.log(currentSession)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    isAuthenticated()
+  }, [authenticated])
+
   return (
     <AnimationRevealPage>
-      <Hero />
+      { authenticated ? 
+      <h1>AUTHENTICATED</h1>
+        :
+        null
+      }
+      <Hero isAuthenticated={authenticated}/>
       <Features />
       <Pricing />
       <MainFeature 
