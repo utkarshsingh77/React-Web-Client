@@ -53,13 +53,15 @@ const Hero = ({isAuthenticated}) => {
   //   })
   //   .catch((e) => console.log(e))
   // };
-    const [email, setEmail] = useState("")
+
+
+    const [email, setEmail] = useState("");
+
     const handleEmailSubmit = (e) => {
-        axios.post('https://hook.io/karsh.singh.1/email-dump', {email: email})
+        axios.post('http://localhost:5000/api/email', {email: email})
             .then(() => console.log("hello"))
             .catch(() => console.error('not sent'))
         e.preventDefault()
-
     }
 
     const handleChange = (e) => {

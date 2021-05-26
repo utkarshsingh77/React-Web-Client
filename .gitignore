@@ -1,6 +1,6 @@
 node_modules/
 *.DS_Store
-
+.env
 #amplify
 amplify/logs
 amplify/mock-data
