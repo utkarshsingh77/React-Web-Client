@@ -42,7 +42,7 @@ const IllustrationImage = styled.div`
 
 
 function SignupPage({
-  logoLinkUrl = "http://localhost:3000/",
+  logoLinkUrl = "/",
   illustrationImageSrc = illustration,
   headingText = "Sign Up For Harbor",
   socialButtons = [
